@@ -1,0 +1,37 @@
+# Dependencies & framework output
+node_modules/
+.next/
+out/
+deploy/
+build/
+
+# Generated deploy packages & caches
+*.zip
+*.tsbuildinfo
+__pycache__/
+*.py[cod]
+*.log
+
+# Local-only media, QA captures and working records
+QA/
+Video_Picture/
+.chrome-tmp/
+.workbuddy-ai/
+public/actions_backup_dark/
+public/preview.html
+*.jfif
+
+# Internal / legacy working files (replaced by docs/)
+CLOUDFLARE_DEPLOY.md
+DEVELOPMENT_REPORT.md
+SECURITY_AUDIT.md
+vercel.json
+*.docx
+~$*
+start-server.bat
+test-locally.bat
+
+# Environment & OS
+.env*
+.DS_Store
+Thumbs.db

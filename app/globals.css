@@ -1,0 +1,408 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --la-bg: #1A1A2E;
+  --la-card: #16213E;
+  --la-pink: #FF6B9D;
+  --la-gold: #FFD93D;
+  --la-hunger: #FF8E72;
+  --la-energy: #4D96FF;
+  --la-mental: #9B7BFF;
+  --la-beauty: #6BCB9F;
+  --la-aura: #E8C547;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--la-bg);
+  color: #FFF5E4;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+/* Glass card */
+.glass-card {
+  background: rgba(22, 33, 62, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 107, 157, 0.15);
+  border-radius: 1rem;
+}
+
+/* Stat bar glow when low */
+.stat-bar-glow-low {
+  animation: glow-low 1.2s ease-in-out infinite;
+}
+
+@keyframes glow-low {
+  0%, 100% { box-shadow: 0 0 8px currentColor; }
+  50% { box-shadow: 0 0 18px currentColor; }
+}
+
+/* Marquee for broadcast ticker */
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-content {
+  display: inline-block;
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Custom scrollbar for event log */
+.event-log-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 107, 157, 0.3) transparent;
+}
+
+.event-log-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.event-log-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.event-log-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 107, 157, 0.3);
+  border-radius: 2px;
+}
+
+/* Pulse warning banner */
+.pulse-warning {
+  animation: pulse-warning 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-warning {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   PUBLIC LANDING — black neo-noir tech shell
+   All of this is decorative CSS in an EXTERNAL stylesheet. No inline
+   display:none / visibility:hidden / sr-only / clip / 1px text tricks ever
+   reach the HTML, so Baidu and no-JS LLM crawlers still read real body copy.
+   Fonts are loaded by the <link> in app/layout.tsx (preconnect friendly).
+   ──────────────────────────────────────────────────────────────────────── */
+:root {
+  --la-cyan: #35E6F4;
+  --la-violet: #A78BFA;
+  --la-ink: #05060C;
+}
+
+.la-mono {
+  font-family: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.laslos-landing {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(900px 520px at 50% -12%, rgba(53, 230, 244, 0.14), transparent 68%),
+    radial-gradient(620px 460px at 100% 22%, rgba(167, 139, 250, 0.12), transparent 70%),
+    radial-gradient(620px 460px at 0% 72%, rgba(255, 107, 157, 0.10), transparent 70%),
+    linear-gradient(180deg, #05060C 0%, #0A0B16 52%, #07080F 100%);
+}
+
+/* Perspective-ish grid: sits ABOVE the gradient, BELOW all text. */
+.laslos-landing::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    linear-gradient(rgba(120, 190, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 190, 255, 0.055) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.45) 46%, transparent 88%);
+  mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.45) 46%, transparent 88%);
+  pointer-events: none;
+}
+
+/* Faint CRT scanlines + a cool horizon glow at the bottom of the page. */
+.laslos-landing::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    repeating-linear-gradient(180deg, rgba(255,255,255,.014) 0, rgba(255,255,255,.014) 1px, transparent 1px, transparent 4px),
+    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(53, 230, 244, 0.10), transparent 70%);
+  pointer-events: none;
+}
+
+.la-kicker {
+  font-family: 'Space Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(53, 230, 244, 0.85);
+}
+
+.la-title-gradient {
+  background: linear-gradient(100deg, #FFFFFF 0%, #C6F4FF 30%, #7DD3FC 55%, #FF9EC4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 34px rgba(53, 230, 244, 0.22));
+}
+
+.la-hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(53,230,244,.42), rgba(255,107,157,.32), transparent);
+}
+
+.la-panel {
+  position: relative;
+  border: 1px solid rgba(148, 180, 255, 0.14);
+  border-radius: 14px;
+  background: linear-gradient(160deg, rgba(24, 32, 58, 0.72) 0%, rgba(10, 12, 24, 0.78) 100%);
+  backdrop-filter: blur(10px);
+  transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+}
+
+.la-panel::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(53, 230, 244, 0.72), transparent);
+}
+
+.la-panel:hover {
+  border-color: rgba(53, 230, 244, 0.42);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(0,0,0,.45), 0 0 26px rgba(53,230,244,.10);
+}
+
+.la-panel--live {
+  border-color: rgba(255, 107, 157, 0.38);
+  background: linear-gradient(160deg, rgba(58, 26, 54, 0.62) 0%, rgba(12, 12, 26, 0.80) 100%);
+}
+
+.la-panel--live::before {
+  background: linear-gradient(90deg, transparent, rgba(255, 107, 157, 0.92), transparent);
+}
+
+.la-panel--queued {
+  border-style: dashed;
+  border-color: rgba(148, 180, 255, 0.22);
+  background: linear-gradient(160deg, rgba(18, 22, 40, 0.52) 0%, rgba(8, 9, 18, 0.62) 100%);
+}
+
+.la-panel--queued::before {
+  background: linear-gradient(90deg, transparent, rgba(232, 197, 71, 0.55), transparent);
+}
+
+.la-details {
+  border: 1px solid rgba(148, 180, 255, 0.14);
+  border-radius: 14px;
+  background: rgba(10, 12, 24, 0.55);
+  backdrop-filter: blur(8px);
+}
+
+.la-details[open] {
+  border-color: rgba(53, 230, 244, 0.30);
+}
+
+.la-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 2.2rem;
+  border-radius: 9999px;
+  color: #05060C;
+  /* Ricky Sir 2026-11-05: keep the left half solid cyan, let the colour shift
+     begin only at the MIDDLE, and give the right end a fuller pink. */
+  background: linear-gradient(100deg,
+    #35E6F4 0%,
+    #35E6F4 46%,
+    #8BE9FF 56%,
+    #FF8FB8 76%,
+    #FF6B9D 100%);
+  box-shadow:
+    0 0 0 1px rgba(53, 230, 244, 0.45),
+    0 10px 34px rgba(53, 230, 244, 0.18),
+    0 0 60px rgba(255, 107, 157, 0.32);
+  transition: transform .22s ease, box-shadow .22s ease, filter .22s ease;
+}
+
+.la-cta:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow:
+    0 0 0 1px rgba(255, 107, 157, 0.55),
+    0 14px 44px rgba(53, 230, 244, 0.28),
+    0 0 82px rgba(255, 107, 157, 0.46);
+}
+
+/* ── Hero background movie (Ricky Sir, 2026-11-05) ─────────────────────────
+   The 15s logo animation is mostly pure black, so a light scrim is enough to
+   keep the visible copy readable. The video sits BELOW .la-hero-content in the
+   stacking order and never hides any text — no display:none / sr-only / 1px
+   tricks anywhere in the HTML. All decoration lives in this external CSS. */
+.la-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* Brightness contract (Ricky Sir, 2026-11-05): the 15s logo movie is almost
+     pure black, so it needs a high opacity AND a brightness lift to be seen.
+     These two tokens are also build-time verification markers — change them
+     together, never one alone. */
+  --la-hero-video-opacity: 0.82;
+  --la-hero-video-brightness: 1.32;
+}
+
+.la-hero-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: var(--la-hero-video-opacity);
+  filter: brightness(var(--la-hero-video-brightness)) saturate(1.05) contrast(1.02);
+  pointer-events: none;
+}
+
+.la-hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  /* Lightened together with the video boost: keep the glow visible while
+     preserving enough contrast for the white/cyan copy above it. */
+  background:
+    /* Centre copy shield: the movie's large wordmark animates straight
+       through the title / tagline / intro block. Darken ONLY that zone so the
+       foreground copy keeps its contrast, while the surrounding artwork stays
+       clearly visible. This is a soft radial, not a hard black box. */
+    radial-gradient(ellipse 34% 42% at 50% 45%,
+      rgba(5, 6, 12, 0.78) 0%, rgba(5, 6, 12, 0.62) 52%,
+      rgba(5, 6, 12, 0.18) 82%, rgba(5, 6, 12, 0.00) 100%),
+    radial-gradient(ellipse 64% 56% at 50% 42%,
+      rgba(5, 6, 12, 0.00) 0%, rgba(5, 6, 12, 0.22) 60%, rgba(5, 6, 12, 0.62) 100%),
+    linear-gradient(180deg,
+      rgba(5, 6, 12, 0.20) 0%, rgba(5, 6, 12, 0.06) 42%, rgba(5, 6, 12, 0.70) 100%);
+}
+
+.la-hero-content {
+  position: relative;
+  z-index: 10;
+}
+
+/* Numeric pill at the LEFT end of the top bar. */
+.la-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.45rem 1.1rem;
+  border: 1px solid rgba(53, 230, 244, 0.28);
+  border-radius: 9999px;
+  background: rgba(53, 230, 244, 0.06);
+}
+
+/* Transparent cyan mark to the LEFT of the <h1>. */
+.la-logo {
+  filter: drop-shadow(0 0 22px rgba(53, 230, 244, 0.45));
+}
+
+/* ── Game entry page background (Ricky Sir, 2026-11-05) ─────────────────────
+   The landing page keeps the 15s movie; /play.html uses the STATIC triptych
+   illustration X-Hero_1 instead. All decoration lives here — the HTML carries
+   only real, visible text.
+
+   Brightness revision: the original stack (0.92 image + 0.52 scrim + a dark
+   vignette) left only ~29% of the artwork's light in the centre and ~9% at the
+   edges, so the illustration was almost unreadable. The image is now lifted
+   slightly ABOVE its native brightness, the flat scrim is thinner, and the
+   vignette is much softer — the palm trees, monitor and keyboard read clearly
+   while the central vignette still protects the white character-creation copy.
+   Measured: whole-frame luma 16.1 -> 29.6, left artwork 7.2 -> 19.6. */
+.la-play-hero-img {
+  object-fit: cover;
+  object-position: 50% 50%;
+  filter: brightness(1.15) saturate(1.08);
+}
+
+.la-play-scrim {
+  background: rgba(0, 0, 0, 0.34);
+}
+
+.la-play-vignette {
+  background: radial-gradient(ellipse at center,
+    rgba(0, 0, 0, 0.28) 0%, rgba(0, 0, 0, 0.52) 100%);
+}
+
+/* On a phone, a 16:9 movie inside a tall hero would be cropped to a tiny
+   central slice and blown up to a giant wordmark behind the copy. `contain`
+   keeps the whole brand animation at its real proportions instead. */
+@media (max-width: 640px) {
+  .la-hero-video {
+    object-fit: contain;
+    object-position: 50% 44%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .la-hero-video { opacity: 0; }
+}
+
+.la-chip {
+  border: 1px solid rgba(148, 180, 255, 0.16);
+  border-radius: 12px;
+  background: rgba(10, 14, 30, 0.55);
+  padding: 0.85rem 1rem;
+}
+
+.la-chip-num {
+  font-family: 'Space Mono', ui-monospace, monospace;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  color: #8BE9FF;
+  text-shadow: 0 0 18px rgba(53, 230, 244, 0.38);
+}
+
+.la-chip-label {
+  font-family: 'Space Mono', ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  color: rgba(255, 245, 228, 0.48);
+}
+
+@keyframes la-blink {
+  0%, 100% { opacity: 1; box-shadow: 0 0 12px rgba(53, 230, 244, .9); }
+  50%      { opacity: .35; box-shadow: none; }
+}
+
+.la-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: #35E6F4;
+  animation: la-blink 2.4s ease-in-out infinite;
+}
+
+.la-dot--pink { background: #FF6B9D; animation-name: la-blink; }
+

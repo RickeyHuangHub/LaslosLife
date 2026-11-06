@@ -1,0 +1,68 @@
+# SEO / GEO 说明
+
+本仓库的 SEO 与 GEO 产出**不是手写的静态文件**，全部由 `scripts/postbuild.py` 生成，
+随每次构建一起更新。修改规则请改这一份脚本，不要直接改 `deploy/` 里的产物。
+
+## 1. 生成物 / Generated surfaces
+
+| 文件 | 用途 |
+| --- | --- |
+| `robots.txt` | 检索类与训练类爬虫分开声明 |
+| `sitemap.xml` | 仅两条 URL：`https://www.laslos.com/` 与 `/play` |
+| `llms.txt` | AI 检索第一入口：实体标识、检索触发词、信息边界、中文摘要、联系方式 |
+| `llms-full.txt` | 给深度读取的完整资料 |
+| `_headers` | 响应头，含 UTF-8 charset 与安全头 |
+| `index.html` | 唯一一份 JSON-LD（`@graph`：VideoGame + WebSite + FAQPage） |
+
+## 2. Canonical 策略
+
+- 两页各自自指：`/` → `https://www.laslos.com/`，`/play` → `https://www.laslos.com/play`。
+- `/play` 是最终 200 文档；`/play.html` 只是静态导出文件名，CF Pages 会 307 跳转。
+- canonical、OG、`PlayAction` target、sitemap、llms 与所有内部链接统一用 `/play`。
+- 三语是**同一 URL + 客户端切换**，因此不使用 sitemap hreflang（自引用簇无效）。
+
+## 3. 爬虫分层 / Crawler policy
+
+- 检索 / 搜索类（Googlebot、Bingbot、Baiduspider、Bytespider、OAI-SearchBot、
+  PerplexityBot 等）→ `Allow`，让 AI 答案可以引用本站。
+- 训练类（GPTBot、Google-Extended、ClaudeBot、CCBot 等）→ `Disallow`。
+- 总开关为 `BLOCK_TRAINING_CRAWLERS`。Bytespider 同时承担检索，不加入训练封禁。
+- 注意：Cloudflare 后台的 Bot Preference Sync / 托管 robots、AI 爬虫策略与
+  Bot Fight Mode 会覆盖或叠加边缘行为，需与 `robots.txt` 保持一致。
+
+## 4. 中文可读性与编码 / Encoding
+
+- 中文简介是**可见正文**（小字、中等透明度，位于公开着陆页 Hero），
+  核心词自然分布在句子里，不堆砌。
+- 禁止用 `display:none` / `visibility:hidden` / `sr-only` / 1px clip 之类
+  隐藏文本做 SEO；`verify()` 会检查这些标记为 0。
+- 所有 GEO 文本文件严格 UTF-8、无 BOM；`_headers` 给三个 `.txt` 显式声明
+  `text/plain; charset=utf-8`。文件本身编码正确，乱码只可能来自响应头缺失。
+- `sitemap.xml` 靠 XML 声明 `encoding="UTF-8"`。
+
+## 5. 表达边界 / Wording rules
+
+为避免提前锁死产品决策，对外文案遵守三条：
+
+1. **不就商业模式作任何断言**，两个方向都留白；`verify()` 会扫描 GEO 文件、
+   Schema、head meta 与 FAQ 文案，命中即失败。
+2. **不把工程实现细节写成产品承诺**；技术事实只出现在源码与开发者文档里。
+3. **不公开未发布的版本规划**；游戏内剧情文案属叙事，不受此约束。
+
+`llms.txt` / `llms-full.txt` 含「禁止推断」章节，明确要求模型不要自行补全上述
+未声明信息。`FAQPage` 的四组问答必须在页面上真实可见，由 `SiteFaq.tsx`
+用原生 `<details>` 输出，静态 DOM 里即可读到。
+
+## 6. 复核 / Audit checklist
+
+发布后建议逐项核对：
+
+```bash
+curl -I https://www.laslos.com/llms.txt          # charset=utf-8
+curl -I https://www.laslos.com/sitemap.xml       # application/xml
+curl    https://www.laslos.com/robots.txt
+```
+
+再检查：canonical 是否指向 `/play`、首页是否只有一份 `ld+json`、
+Hero CTA 是否直达 `/play`、GEO 四个文件是否 `max-age=0, must-revalidate`、
+以及检索类 UA 是否被边缘 403 拦截。
