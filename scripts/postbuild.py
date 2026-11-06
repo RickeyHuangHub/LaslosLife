@@ -117,10 +117,28 @@ SCHEMA = {
                 "the hidden Aura stat and unlock 8 endings. Play instantly in any "
                 "web browser with no download, no sign-up and no installation."
             ),
+            # Entity disambiguation (Ricky Sir, 2026-11-05). A coined name like
+            # "Laslos" is easily folded into near-spelling competitors by search
+            # engines. schema.org's disambiguatingDescription is the machine-
+            # readable place for this — its own example (George Bush / "41st
+            # President") states a DISTINCTIVE POSITIVE trait, never "not X".
+            # So: describe what this game uniquely IS, once, here only. Do NOT
+            # name third-party brands in this field, in description, in the
+            # meta/title, or in any player-visible copy: repeating a rival's
+            # high-authority token inside our own entity description tends to
+            # strengthen the co-occurrence we are trying to break, and it reads
+            # as negative marketing to players. No invented publisher, no
+            # placeholder sameAs URLs — only real, verified identities.
+            "disambiguatingDescription": (
+                "A 30-day Los Angeles browser survival game with a hidden Aura "
+                "stat and 8 endings."
+            ),
             "url": SITE + "/",
             "sameAs": ["https://x.com/LaslosLife"],
             "image": SITE + "/images/person-hero.jpg",
-            "inLanguage": "en",
+            # The UI ships in all three languages; keep this in sync with the
+            # WebSite node and the FAQ copy instead of claiming English only.
+            "inLanguage": ["en", "zh", "de"],
             "gamePlatform": "Web Browser",
             "playMode": "SinglePlayer",
             "genre": ["Simulation", "Survival", "Text Adventure", "Adventure"],
