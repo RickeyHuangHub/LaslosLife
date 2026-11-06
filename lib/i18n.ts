@@ -19,6 +19,8 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     // version is also the server-rendered default so crawlers can read it.
     'site_intro': 'Laslos Life is a single-player browser text survival adventure — a thoughtful strategy game. As a browser game it needs no download and no sign-up: just open the page and play. Set in Los Angeles, the 30-day survival challenge branches through your choices into 8 endings. Available in Chinese, English and German.',
     // Public landing Hero (always visible, server-rendered in Chinese)
+    // Visible genre badge under the Chinese name — not hidden SEO text.
+    'landing_genre': 'Text-Based Strategy Game',
     'landing_tagline': 'A decision-training sandbox for survival strategy',
     // Brand CTA: the product owner asked for this exact English wording in
     // every language. It is a slogan, not translatable UI copy.
@@ -456,6 +458,8 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     // Visible FAQ — must stay identical to FAQ_ITEMS in scripts/postbuild.py,
     // otherwise FAQPage structured data would describe text users cannot see.
     // 公开着陆首屏（常驻可见，服务端默认输出中文）
+    // 中文名下方的品类标签，是可见正文，不是隐藏关键词。
+    'landing_genre': '文字育智游戏',
     'landing_tagline': '智力沙盒与决策训练场',
     // Brand CTA: Ricky Sir asked for this exact English wording on the button.
     // It is a slogan, so it stays identical in all three languages.
@@ -830,6 +834,7 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'game_subtitle': 'Die Überlebensgeschichte einer 26-jährigen Frau in Los Angeles',
     'site_intro': 'Laslos Life ist ein Single-Player-Text-Survival-Abenteuer im Browser – ein durchdachtes Strategie-Spiel. Als Browserspiel braucht es keinen Download und keine Registrierung: Seite öffnen und losspielen. In Los Angeles führt die 30-tägige Überlebensherausforderung je nach Entscheidung zu 8 Enden. Verfügbar auf Chinesisch, Englisch und Deutsch.',
     // Öffentlicher Landing-Hero (immer sichtbar, serverseitig auf Chinesisch)
+    'landing_genre': 'Textbasiertes Strategiespiel',
     'landing_tagline': 'Ein Entscheidungs-Trainingsfeld für Überlebensstrategie',
     // Marken-CTA: dieselbe englische Wendung in allen drei Sprachen.
     'landing_cta': "Let's Try",

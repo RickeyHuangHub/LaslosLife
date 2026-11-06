@@ -31,6 +31,8 @@ const useIsomorphicLayoutEffect =
  *   at the LEFT end; the three language buttons sit at the RIGHT end.
  * - The English lead moved ABOVE the title; the Chinese/English intro stays
  *   below the gold tagline, where crawlers and players both read it.
+ * - A visible genre badge (文字育智游戏) sits directly under the Chinese name:
+ *   server-rendered Chinese for crawlers, localised after hydration.
  * - The cyan Laslos mark (/images/laslos-mark.png, transparent crop of the
  *   official logo) sits to the LEFT of the gradient <h1>.
  * - The 15s hero movie plays BEHIND the whole hero as a dark, low-opacity
@@ -108,6 +110,19 @@ export function SiteIntro() {
 
       <p className="mt-3 font-display text-lg font-semibold tracking-[0.42em] text-[#FF8FB8] md:text-2xl">
         拉斯洛斯生活
+      </p>
+
+      {/*
+        Visible genre badge (Ricky Sir, 2026-11-05). get() renders Chinese on
+        the server, so the raw HTML carries 文字育智游戏 for crawlers; after
+        mount it follows the player's language. Always visible static DOM —
+        no display:none, no sr-only, no opacity tricks.
+      */}
+      <p className="mt-4 flex justify-center">
+        <span className="inline-flex items-center gap-2 rounded-full border border-[#8BE9FF]/35 bg-[#8BE9FF]/5 px-4 py-1.5 font-display text-[10px] font-semibold tracking-[0.2em] text-[#8BE9FF]/90 md:text-[11px]">
+          <span aria-hidden="true" className="la-dot opacity-70" />
+          {get('landing_genre')}
+        </span>
       </p>
 
       <p className="mx-auto mt-6 max-w-[680px] font-display text-sm font-semibold tracking-wide text-[#E8C547] md:text-base">
