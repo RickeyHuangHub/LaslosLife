@@ -53,7 +53,34 @@
 未声明信息。`FAQPage` 的四组问答必须在页面上真实可见，由 `SiteFaq.tsx`
 用原生 `<details>` 输出，静态 DOM 里即可读到。
 
-## 6. 复核 / Audit checklist
+## 6. Google 富结果测试 / Rich Results Test
+
+首页在 Google Rich Results Test 中可能显示 `Crawled successfully`，同时显示
+`No items detected`。这是**预期结果，不是部署故障**，无需为此改动结构化数据。
+
+- 首页确实有且只有一份 `ld+json`，由 `scripts/postbuild.py` 在构建期注入静态
+  `<head>`；`/play` 按两页架构不重复放置。用 Googlebot UA 抓源码，或看测试工具的
+  "View Rendered HTML"，都能读到这个标签。
+- 该工具只列出**有资格生成富结果**的类型。本页 `@graph` 里的
+  `VideoGame` / `WebSite` / `FAQPage` 都是合法 Schema.org 节点，但都不属于 Google
+  当前支持的富结果功能：Software App 文档说明单独使用 `VideoGame` 不会展示富结果；
+  sitelinks searchbox 已退役；FAQ 富结果自 2026-05-07 起不再展示、2026-06-15
+  移除文档。因此工具报 0 个 item 是正确输出。
+- 这份 Schema 的目标是让 AI 检索与知识图谱准确识别「Laslos Life」这一个实体
+  （配合 `llms.txt`、`sameAs` 与 canonical），不是争取富摘要样式。
+- 不建议为了让测试出现 item 而补 `SoftwareApplication`：该类型强制要求商业条款
+  字段与用户评分字段，前者本站对外一律留白，后者没有真实数据，硬填会违反
+  Google 的结构化数据质量规范；装饰性背景视频也不适合标成 `VideoObject`。
+
+| 验证目的 | 应使用的工具 |
+| --- | --- |
+| Schema 语法 / 类型合法性 | `https://validator.schema.org/` |
+| Google 实际抓到的页面 | Search Console → URL Inspection |
+| 是否有资格生成富结果 | Rich Results Test（本页预期为 0 item） |
+
+`id=` 形式的测试链接是保存的快照；发布新版本后建议对 `/` 与 `/play` 各跑一次新测试。
+
+## 7. 复核 / Audit checklist
 
 发布后建议逐项核对：
 
@@ -65,4 +92,4 @@ curl    https://www.laslos.com/robots.txt
 
 再检查：canonical 是否指向 `/play`、首页是否只有一份 `ld+json`、
 Hero CTA 是否直达 `/play`、GEO 四个文件是否 `max-age=0, must-revalidate`、
-以及检索类 UA 是否被边缘 403 拦截。
+以及检索类 UA 是否被边缘 403 拦截。首页富结果测试返回 0 item 属预期，不计为问题。
