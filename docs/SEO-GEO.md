@@ -48,16 +48,29 @@
    Schema、head meta 与 FAQ 文案，命中即失败。
 2. **不把工程实现细节写成产品承诺**；技术事实只出现在源码与开发者文档里。
 3. **不公开未发布的版本规划**；游戏内剧情文案属叙事，不受此约束。
-4. **实体消歧只在机器可读字段出现一次**：`VideoGame` 节点的
-   `disambiguatingDescription` 用作品独有特征（30 天、洛杉矶、隐藏 Aura、8 种结局）
-   正面区分，不点名第三方品牌，也不写否定句。可见正文、Title / meta、FAQ 与
-   GEO 文本一律不出现竞品或近音词——在自己的实体描述里反复引用高权重外部词，
-   反而会强化共现。`sameAs` 只填真实存在的身份（当前为官方 X 账号），
-   不填占位链接、不虚构发行方与不存在的图片资源。
+4. **实体消歧用「独立品牌」技巧，而不是反复点名竞品**：
+   - 全站近音竞品名**只出现一次**，且只在 FAQ 第 5 条的**问题**里
+     （用来接住「XX 和 YY 有什么区别」这类精确导航查询）。所有**答案**、
+     `VideoGame.disambiguatingDescription`、Title / meta / OG、Hero 正文与
+     GEO 摘要都不出现该名称，也不写针对某个具体名字的否定句。
+   - 取而代之的是一句正面的、自成体系的品牌声明（`BRAND_LINE`）：
+     「Laslos Life（拉斯洛斯生活）是一个独立、完整的原创作品与品牌名称，
+     不是任何其他名称的变体、简写或拼写误差」。后半句只作**泛指**否定，
+     不指向任何第三方；这样既传达「独立实体」，又不会把高权重外部词
+     灌进自己的实体描述而强化共现。机器可读层用它的纯正面版本
+     （`disambiguatingDescription`：`An independent, self-contained original
+     game title and brand: ...`）。
+   - FAQ 第 6、7 条针对「安全吗 / 怎么样」这类导航型提问给出官方权威解答。
+     第 5–7 条与 `llms.txt` / `llms-full.txt` 的「实体区分」章节共用
+     `FAQ_ITEMS` + `BRAND_LINE` 这一份真相源（`scripts/postbuild.py`），
+     同步写入可见 FAQ、`FAQPage` JSON-LD 与两个 llm 文件，口径不会漂移。
+   - `sameAs` 只填真实存在的身份（当前为官方 X 账号），不填占位链接、
+     不虚构发行方与不存在的图片资源。
 
 `llms.txt` / `llms-full.txt` 含「禁止推断」章节，明确要求模型不要自行补全上述
-未声明信息。`FAQPage` 的四组问答必须在页面上真实可见，由 `SiteFaq.tsx`
-用原生 `<details>` 输出，静态 DOM 里即可读到。
+未声明信息。`FAQPage` 的七组问答必须在页面上真实可见，由 `SiteFaq.tsx`
+在原生 `<details>` 内以真实 DOM 文本输出（编号同理为静态文本，不用 CSS 计数器），
+静态 HTML 里即可读到。
 
 ## 6. Google 富结果测试 / Rich Results Test
 
@@ -99,3 +112,7 @@ curl    https://www.laslos.com/robots.txt
 再检查：canonical 是否指向 `/play`、首页是否只有一份 `ld+json`、
 Hero CTA 是否直达 `/play`、GEO 四个文件是否 `max-age=0, must-revalidate`、
 以及检索类 UA 是否被边缘 403 拦截。首页富结果测试返回 0 item 属预期，不计为问题。
+
+FAQ 相关两项：静态 DOM 里应能读到 7 条编号问答与 Q5–Q7 正文；`llms.txt` /
+`llms-full.txt` / `FAQPage` 三处的问答应与页面逐字一致。近音竞品名在页面上
+只应命中 FAQ 第 5 条的问题，答案与实体描述里不应出现。

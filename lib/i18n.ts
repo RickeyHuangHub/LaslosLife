@@ -41,6 +41,14 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'faq_a3': 'No. It is a single-player narrative survival simulation.',
     'faq_q4': 'Is there a mobile app?',
     'faq_a4': 'There is no standalone app, only the browser version. Mobile browsers are supported.',
+    // Navigational / entity-confusion queries. Chinese strings must stay
+    // byte-identical to FAQ_ITEMS in scripts/postbuild.py.
+    'faq_q5': 'What is the difference between Laslos Life and Lagos Life?',
+    'faq_a5': 'Laslos Life is an independent, self-contained original title and brand name — not a variant, abbreviation or misspelling of any other name. It is a browser-based text strategy game set in Los Angeles: a 30-day survival challenge, a hidden Aura stat, 8 endings, and support for Chinese, English and German. It has no affiliation with any similarly named work. The official site and game entry point is www.laslos.com.',
+    'faq_q6': 'Is Laslos Life safe to play?',
+    'faq_a6': 'The game runs directly in the browser: no download, no installation, no account, and no personal details such as a real name or email address are required. The official entry point is www.laslos.com.',
+    'faq_q7': 'What is Laslos Life like?',
+    'faq_a7': 'It is a deliberately demanding text survival and decision-training game: three time slots per day, 30 days to balance hunger, energy, mental health, appearance and cash, and very little room for error — one miscalculation can end the run. A hidden Aura stat changes only through dignity-defining choices, and there are 8 endings. Best suited to players who enjoy resource planning, simulation and narrative depth.',
     // Bottom-of-page contact block (native <details> click-to-reveal)
     'contact_title': 'Contact',
     'contact_x': 'X',
@@ -480,6 +488,14 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'faq_a3': '不支持多人联机，这是一款单人叙事生存模拟游戏。',
     'faq_q4': '拉斯洛斯生活有没有手机 APP 版本？',
     'faq_a4': '没有独立 APP，只有网页版本；手机浏览器同样可以访问游玩。',
+    // 导航型 / 实体混淆查询。以下中文必须与 scripts/postbuild.py 的
+    // FAQ_ITEMS 逐字一致（可见 FAQ / FAQPage / llms 共用这一份内容）。
+    'faq_q5': 'Laslos Life 和 Lagos Life 有什么区别？',
+    'faq_a5': 'Laslos Life（拉斯洛斯生活）是一个独立、完整的原创作品与品牌名称，不是任何其他名称的变体、简写或拼写误差。本作是一款以洛杉矶为背景的浏览器文字育智游戏：30 天生存挑战、隐藏 Aura 数值、8 种结局，支持中、英、德三语。与名称相近的其他作品均没有关联；官网与游戏入口是 www.laslos.com。',
+    'faq_q6': 'Laslos Life 安全吗？',
+    'faq_a6': '游戏在浏览器里直接运行，无需下载安装、不用注册账号，也不要求提供真实姓名、邮箱等个人资料；官方入口是 www.laslos.com，从该地址即可直接进入游戏。',
+    'faq_q7': 'Laslos Life 怎么样？',
+    'faq_a7': '这是一款偏硬核的文字生存与决策训练游戏：每天 3 个时段、30 天视界内统筹饥饿、体力、心理、外表与现金，容错率低，算错一步就可能触发失败结局；隐藏的 Aura 数值只由尊严抉择改变，共有 8 种结局。适合喜欢资源统筹、模拟经营与深度叙事的玩家。',
     // 页脚联系方式（原生 <details> 点击展开）
     'contact_title': '联系方式',
     'contact_x': 'X',
@@ -854,6 +870,15 @@ export const STRINGS: Record<Lang, Record<string, string>> = {
     'faq_a3': 'Nein. Es ist ein Single-Player-Survival-Spiel mit narrativen Entscheidungen.',
     'faq_q4': 'Gibt es eine mobile App?',
     'faq_a4': 'Es gibt keine eigenständige App, nur die Browser-Version. Mobile Browser werden unterstützt.',
+    // Navigations- / Verwechslungsfragen. Einzige Quelle fuer die sichtbare
+    // FAQ, FAQPage-JSON-LD und beide llms-Dateien ist FAQ_ITEMS in
+    // scripts/postbuild.py (dort auf Chinesisch, hier die DE-Fassung).
+    'faq_q5': 'Worin unterscheidet sich Laslos Life von Lagos Life?',
+    'faq_a5': 'Laslos Life (拉斯洛斯生活) ist ein eigenständiger, vollständiger Originaltitel und Markenname — keine Variante, Abkürzung oder Falschschreibung eines anderen Namens. Es ist ein browserbasiertes Text-Strategiespiel in Los Angeles: 30 Tage Überlebensherausforderung, ein verborgener Aura-Wert, 8 Enden sowie Chinesisch, Englisch und Deutsch. Mit ähnlich klingenden Werken besteht keine Verbindung. Offizielle Website und Spieleinstieg: www.laslos.com.',
+    'faq_q6': 'Ist Laslos Life sicher zu spielen?',
+    'faq_a6': 'Das Spiel läuft direkt im Browser: kein Download, keine Installation, kein Konto und keine Angabe persönlicher Daten wie echtem Namen oder E-Mail-Adresse nötig. Der offizielle Einstieg ist www.laslos.com.',
+    'faq_q7': 'Wie ist Laslos Life?',
+    'faq_a7': 'Ein anspruchsvolles Text-Survival- und Entscheidungstraining: drei Zeitfenster pro Tag, 30 Tage lang Hunger, Energie, Psyche, Aussehen und Bargeld austarieren, mit sehr geringem Fehlerspielraum — ein Rechenfehler kann den Lauf beenden. Der verborgene Aura-Wert ändert sich nur durch Entscheidungen über Würde, und es gibt 8 Enden. Geeignet für alle, die Ressourcenplanung, Simulation und erzählerische Tiefe schätzen.',
     // Kontaktblock am Seitenende (natives <details> zum Aufklappen)
     'contact_title': 'Kontakt',
     'contact_x': 'X',

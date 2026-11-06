@@ -78,6 +78,23 @@ BAIDU_SITE_VERIFICATION = ""
 #
 # FAQPage is only legitimate when the Q&A is actually visible on the page —
 # components/SiteFaq.tsx renders exactly these strings (see FAQ_ITEMS).
+#
+# Brand-identity technique (Ricky Sir, 2026-11-05). The owner asked for an
+# explicit distinction from a similarly-named work WITHOUT breaking the earlier
+# "no third-party brand names, no targeted negative sentences" boundary. The
+# resolution is two layers: the near-spelling token appears EXACTLY ONCE, in a
+# single FAQ *question* (so that exact navigational query still matches), while
+# every ANSWER, entity description, meta and GEO summary uses a positive,
+# self-contained brand statement plus a GENERIC (never name-specific) negation.
+# Define it once here so all four surfaces stay byte-identical.
+BRAND_LINE = (
+    "Laslos Life（拉斯洛斯生活）是一个独立、完整的原创作品与品牌名称，"
+    "不是任何其他名称的变体、简写或拼写误差。"
+)
+BRAND_LINE_EN = (
+    "Laslos Life is an independent, self-contained original title and brand "
+    "name — not a variant, abbreviation or misspelling of any other name."
+)
 FAQ_ITEMS = [
     (
         "Laslos Life 拉斯洛斯生活是什么类型的游戏？",
@@ -94,6 +111,26 @@ FAQ_ITEMS = [
     (
         "拉斯洛斯生活有没有手机 APP 版本？",
         "没有独立 APP，只有网页版本；手机浏览器同样可以访问游玩。",
+    ),
+    # Navigational / entity-confusion queries (Ricky Sir, 2026-11-05).
+    # ONE source, four surfaces: visible FAQ, FAQPage JSON-LD, llms.txt and
+    # llms-full.txt all read FAQ_ITEMS, so the clarification stays consistent
+    # without being repeated in the entity's own description / meta / OG.
+    # Q5's QUESTION is the ONLY string on the whole site that names a similarly
+    # spelled third-party work (it exists to match that exact search query).
+    # Its ANSWER never repeats the token: it leads with the independent-brand
+    # statement, then describes the game, then states a generic non-affiliation.
+    (
+        "Laslos Life 和 Lagos Life 有什么区别？",
+        BRAND_LINE + "本作是一款以洛杉矶为背景的浏览器文字育智游戏：30 天生存挑战、隐藏 Aura 数值、8 种结局，支持中、英、德三语。与名称相近的其他作品均没有关联；官网与游戏入口是 www.laslos.com。",
+    ),
+    (
+        "Laslos Life 安全吗？",
+        "游戏在浏览器里直接运行，无需下载安装、不用注册账号，也不要求提供真实姓名、邮箱等个人资料；官方入口是 www.laslos.com，从该地址即可直接进入游戏。",
+    ),
+    (
+        "Laslos Life 怎么样？",
+        "这是一款偏硬核的文字生存与决策训练游戏：每天 3 个时段、30 天视界内统筹饥饿、体力、心理、外表与现金，容错率低，算错一步就可能触发失败结局；隐藏的 Aura 数值只由尊严抉择改变，共有 8 种结局。适合喜欢资源统筹、模拟经营与深度叙事的玩家。",
     ),
 ]
 
@@ -127,10 +164,13 @@ SCHEMA = {
             # meta/title, or in any player-visible copy: repeating a rival's
             # high-authority token inside our own entity description tends to
             # strengthen the co-occurrence we are trying to break, and it reads
-            # as negative marketing to players. No invented publisher, no
-            # placeholder sameAs URLs — only real, verified identities.
+            # as negative marketing to players. The "independent original title
+            # and brand" phrasing is the positive form of the same disambiguation
+            # the FAQ states in words — no "not X", no third-party token.
+            # No invented publisher, no placeholder sameAs URLs — real IDs only.
             "disambiguatingDescription": (
-                "A 30-day Los Angeles browser survival game with a hidden Aura "
+                "An independent, self-contained original game title and brand: "
+                "a 30-day Los Angeles browser survival game with a hidden Aura "
                 "stat and 8 endings."
             ),
             "url": SITE + "/",
@@ -434,6 +474,12 @@ available in Chinese, English and German.
 Los Angeles survival text game, browser survival game, play in browser no download,
 single-player narrative survival simulation, 30-day survival game with 8 endings
 
+## 实体区分 / Entity disambiguation
+{BRAND_LINE}
+{BRAND_LINE_EN}
+识别本作请锚定唯一标识 `Laslos-Life-Browser-Survival-Game` 与官网 {SITE}/ ；
+名称相近的其他条目与本项目没有关联。
+
 ## 信息边界 / Information boundary
 - 本作是网页端文字模拟游戏；不是手游、不是 Steam 游戏、不是端游，也没有独立 APP。
 - 固定 30 天周期，共 8 个结局；单人游戏，无联机、无多人模式。
@@ -527,9 +573,11 @@ Laslos Life（拉斯洛斯生活）是一款以洛杉矶为舞台的网页文字
 {FAQ_LINES}
 
 ## 实体区分 / Entity disambiguation
-本项目 Laslos Life 是独立网页文字游戏，与其他同名影视、小说、软件或游戏无关。
-This Laslos Life is an independent browser-based text game. It is unrelated to
-any film, novel, software or other work with a similar name.
+{BRAND_LINE}
+{BRAND_LINE_EN}
+本项目是独立的网页文字游戏，与其他同名或近音的影视、小说、软件、地产或游戏条目
+均没有关联。This Laslos Life is an independent browser-based text game, unrelated
+to any film, novel, software, place or other work with a similar name.
 唯一标识：Laslos-Life-Browser-Survival-Game ；官网：{SITE}/ 。
 
 ## 信息边界 / Information boundary
@@ -1108,9 +1156,10 @@ def verify(pages: dict[str, str], names: list[str] | None = None) -> None:
 
     # FAQ presentation contract (product owner, 2026-11-05):
     #   * heading is the plain label `FAQ`, not "常见问题 / FAQ";
-    #   * the four questions are numbered 1. 2. 3. 4. as REAL DOM text.
+    #   * every question is numbered 1. 2. 3. ... as REAL DOM text.
     # CSS ::marker counters would look right to a player but are invisible to
     # no-JS / LLM crawlers, so the numbers are asserted in the raw HTML.
+    # The count follows FAQ_ITEMS, so adding a Q&A never needs a code change.
     for label, text in (
         ("llms.txt", LLMS),
         ("llms-full.txt", LLMS_FULL),
@@ -1122,7 +1171,7 @@ def verify(pages: dict[str, str], names: list[str] | None = None) -> None:
         problems.append("FAQ heading is not the plain `FAQ` label")
     if "<ol" not in html:
         problems.append("FAQ questions are not a numbered <ol> list")
-    for num in (1, 2, 3, 4):
+    for num in range(1, len(FAQ_ITEMS) + 1):
         if f">{num}.</span>" not in html:
             problems.append(f"FAQ question number {num}. missing from static DOM")
 
@@ -1357,7 +1406,8 @@ def verify(pages: dict[str, str], names: list[str] | None = None) -> None:
     print(f"  zh intro @ body top : {'yes' if zh_ok else 'NO'}")
     print(f"  zh core terms       : {sum(t in html for t in ('拉斯洛斯生活', 'Laslos Life', '网页游戏', '生存模拟', '浏览器游戏'))}/5")
     print(f"  hidden-text markers : {len(found_hidden)} (must be 0)")
-    print(f"  FAQ numbering       : {sum(1 for n in (1, 2, 3, 4) if f'>{n}.</span>' in html)}/4 (static DOM text)")
+    faq_nums = sum(1 for n in range(1, len(FAQ_ITEMS) + 1) if f">{n}.</span>" in html)
+    print(f"  FAQ numbering       : {faq_nums}/{len(FAQ_ITEMS)} (static DOM text)")
     cta_ok = 'href="/play"' in html and "Let's Try" in cta_text
     print(f"  landing Hero        : h1={n_h1}, Let's Try CTA={'ok' if cta_ok else 'MISSING'}, pillars {sum(t in visible_html for t in pillar_tokens)}/3")
     print(f"  landing visual HTML : {visual_html_ok}/{len(visual_html_tokens)} black-tech markers")

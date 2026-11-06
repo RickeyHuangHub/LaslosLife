@@ -9,8 +9,11 @@ import { STRINGS } from '@/lib/i18n';
 const useIsomorphicLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
-const QUESTION_KEYS = ['faq_q1', 'faq_q2', 'faq_q3', 'faq_q4'];
-const ANSWER_KEYS = ['faq_a1', 'faq_a2', 'faq_a3', 'faq_a4'];
+// Keep this in sync with FAQ_ITEMS in scripts/postbuild.py (the single source
+// of truth for the visible FAQ, FAQPage JSON-LD and both llms files).
+const FAQ_COUNT = 7;
+const QUESTION_KEYS = Array.from({ length: FAQ_COUNT }, (_, i) => `faq_q${i + 1}`);
+const ANSWER_KEYS = Array.from({ length: FAQ_COUNT }, (_, i) => `faq_a${i + 1}`);
 
 /**
  * Visible FAQ. FAQPage structured data is only legitimate when the Q&A is
@@ -37,8 +40,8 @@ export function SiteFaq() {
         Heading is the plain label `FAQ` — the bilingual "常见问题 / FAQ" was
         removed at the product owner's request and mirrored in llms.txt.
 
-        The four questions form a REAL numbered list. The numbers are plain DOM
-        text (1. / 2. / 3. / 4.), NOT CSS ::marker counters: lightweight LLM /
+        The questions form a REAL numbered list. The numbers are plain DOM
+        text (1. / 2. / 3. / ...), NOT CSS ::marker counters: lightweight LLM /
         search crawlers read static HTML and would never see a CSS-generated
         marker. `list-none` only removes the browser's duplicate marker. Each
         number is emitted as ONE expression child (a template string) so React
